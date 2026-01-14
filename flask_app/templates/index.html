@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Insurance Sales Prediction</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; }
+        .container { max-width: 600px; margin: auto; }
+        .form-group { margin-bottom: 15px; }
+        label { display: block; margin-bottom: 5px; font-weight: bold; }
+        input, select { width: 100%; padding: 8px; margin-bottom: 10px; }
+        button { padding: 10px 20px; background: #007bff; color: white; border: none; cursor: pointer; }
+        .result { margin-top: 20px; padding: 15px; background: #f8f9fa; border-radius: 5px; }
+        .interested { color: green; font-weight: bold; }
+        .not-interested { color: red; font-weight: bold; }
+        .error { color: red; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎯 Insurance Sales Prediction</h1>
+        <p>Predict if a customer is interested in vehicle insurance</p>
+        
+        <form method="POST" action="/predict">
+            <div class="form-group">
+                <label>Gender:</label>
+                <select name="gender" required>
+                    <option value="">Select Gender</option>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label>Age:</label>
+                <input type="number" name="age" min="18" max="100" required>
+            </div>
+            
+            <div class="form-group">
+                <label>Driving License (0=No, 1=Yes):</label>
+                <select name="driving_license" required>
+                    <option value="1">Yes</option>
+                    <option value="0">No</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label>Region Code:</label>
+                <input type="number" name="region_code" min="1" max="100" required>
+            </div>
+            
+            <div class="form-group">
+                <label>Previously Insured (0=No, 1=Yes):</label>
+                <select name="previously_insured" required>
+                    <option value="0">No</option>
+                    <option value="1">Yes</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label>Vehicle Age:</label>
+                <select name="vehicle_age" required>
+                    <option value="< 1 Year">&lt; 1 Year</option>
+                    <option value="1-2 Year">1-2 Years</option>
+                    <option value="> 2 Years">&gt; 2 Years</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label>Vehicle Damage (No/Yes):</label>
+                <select name="vehicle_damage" required>
+                    <option value="No">No</option>
+                    <option value="Yes">Yes</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label>Annual Premium (₹):</label>
+                <input type="number" name="annual_premium" min="0" step="100" required>
+            </div>
+            
+            <div class="form-group">
+                <label>Policy Sales Channel:</label>
+                <input type="number" name="policy_sales_channel" min="1" max="200" required>
+            </div>
+            
+            <div class="form-group">
+                <label>Vintage (Days with company):</label>
+                <input type="number" name="vintage" min="0" max="400" required>
+            </div>
+            
+            <button type="submit">Predict</button>
+        </form>
+        
+        {% if error %}
+        <div class="result error">
+            <h3>Error:</h3>
+            <p>{{ error }}</p>
+        </div>
+        {% endif %}
+        
+        {% if result %}
+        <div class="result">
+            <h3>Prediction Result:</h3>
+            <p class="{% if prediction == 1 %}interested{% else %}not-interested{% endif %}">
+                🎯 Customer is <strong>{{ result }}</strong>
+            </p>
+            {% if probability %}
+            <p>Confidence: {{ probability }}</p>
+            {% endif %}
+            
+            <h4>Input Summary:</h4>
+            <ul>
+                <li>Gender: {{ input_data.Gender }}</li>
+                <li>Age: {{ input_data.Age }}</li>
+                <li>Vehicle Age: {{ input_data.Vehicle_Age }}</li>
+                <li>Vehicle Damage: {{ input_data.Vehicle_Damage }}</li>
+                <li>Annual Premium: ₹{{ input_data.Annual_Premium }}</li>
+            </ul>
+        </div>
+        {% endif %}
+        
+        <div style="margin-top: 30px; font-size: 12px; color: #666;">
+            <p>API Endpoint: POST /predict_api with JSON data</p>
+            <p>Health Check: GET /health</p>
+            <p>Metrics: GET /metrics</p>
+        </div>
+    </div>
+</body>
+</html>
