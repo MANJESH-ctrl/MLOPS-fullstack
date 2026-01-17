@@ -26,7 +26,7 @@ repo_name = "MLOPS"
 
 # Set up MLflow tracking URI
 mlflow.set_tracking_uri(f'{dagshub_url}/{repo_owner}/{repo_name}.mlflow')
-dagshub.init(repo_owner='MANJESH-ctrl', repo_name='MLOPS', mlflow=True)
+
 
 def load_model(file_path: str):
     """Load the trained model from a file."""
