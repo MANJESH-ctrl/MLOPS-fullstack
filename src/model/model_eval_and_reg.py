@@ -5,6 +5,7 @@ import pickle
 from matplotlib.pyplot import clf
 import mlflow
 import mlflow.sklearn
+from mlflow import MlflowClient
 import dagshub
 from src.logger import logging
 from src.utility.utils import load_data 
@@ -119,7 +120,10 @@ def main():
                 for param_name, param_value in params.items():
                     mlflow.log_param(param_name, param_value)
 
-            
+            # Register the model as "latest" version
+            client = MlflowClient()
+            client.set_registered_model_alias("my_model", "latest")
+
         except Exception as e:
             logging.error('Failed to complete the model evaluation process: %s', e)
             print(f"Error: {e}")

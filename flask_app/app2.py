@@ -91,14 +91,14 @@ setup_mlflow()
 dagshub.init(repo_owner='MANJESH-ctrl', repo_name='MLOPS', mlflow=True)
 # Load model from MLflow Model Registry
 model_name = "my_model"
-model_version = 2
+
 # model_stage = "Staging"  # or "Production" if you've promoted it
 
 def load_production_model():
     """Load the latest model from MLflow Model Registry."""
     try:
         # Try to load from model registry
-        model_uri = f"models:/{model_name}/{model_version}"
+        model_uri = f"models:/{model_name}@latest"
         print(f"🔍 Loading model from: {model_uri}")
         model = mlflow.pyfunc.load_model(model_uri)
         print(f"✅ Model loaded from MLflow Registry")
