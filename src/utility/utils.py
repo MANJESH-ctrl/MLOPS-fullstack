@@ -42,7 +42,7 @@ def simple_sample_data(source_path, target_path, sample_frac):
 
 
 
-df_sample = simple_sample_data('references\\data.csv', 'locals3\\sampled.csv', 0.01)
+df_sample = simple_sample_data('references/data.csv', 'locals3/sampled.csv', 0.01)
 
 
 # parameters loading utility
