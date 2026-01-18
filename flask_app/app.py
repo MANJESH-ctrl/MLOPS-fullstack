@@ -95,9 +95,9 @@ print("🔄 Loading model and preprocessing objects...")
 
 # Setup MLflow first
 setup_mlflow()
-dagshub.init(repo_owner='MANJESH-ctrl', repo_name='MLOPS', mlflow=True)
-# Load model from MLflow Model Registry
+# dagshub.init(repo_owner='MANJESH-ctrl', repo_name='MLOPS', mlflow=True)
 
+# Load model from MLflow Model Registry
 model_name = "my_model"
 def get_latest_model_version(model_name):
     client = mlflow.MlflowClient()
