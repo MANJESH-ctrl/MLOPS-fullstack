@@ -86,7 +86,7 @@ class TestInsuranceAPI(unittest.TestCase):
         API may still return prediction even for bad input.
         We only ensure it returns VALID JSON.
         """
-        print("🧪 Test 4: Error handling (lenient)")
+        print("🧪 Test 3: Error handling (lenient)")
 
         malformed = {'wrong_key': [1, 2, 3]}
         r = requests.post(

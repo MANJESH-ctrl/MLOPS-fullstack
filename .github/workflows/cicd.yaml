@@ -76,6 +76,12 @@ jobs:
       #       exit 1
       #     fi
       #   shell: bash    
+
+      - name: Start Flask App
+        run: |
+          export FLASK_APP=app.py  # Adjust if needed
+          flask run --host=0.0.0.0 --port=5000 &
+          sleep 5  # Wait for startup
       
       - name: Run Flask app test
         if: success()
@@ -84,18 +90,18 @@ jobs:
         run: |
           python -m unittest tests/test_flask_app.py
 
-      # - name: Stop Flask API (always run)
-      #   if: always()
-      #   run: |
-      #     echo "Stopping Flask..."
-      #     # kill by stored PID (preferred)
-      #     if [ -f flask.pid ]; then
-      #       kill $(cat flask.pid) || true
-      #       rm -f flask.pid
-      #     fi
-      #     # fallback: kill any lingering process by file pattern (harmless if nothing found)
-      #     pkill -f "flask_app/app.py" || true
-      #     echo "Flask stopped (or no process found)."
-      #     echo "---- flask.log (last 200 lines) ----"
-      #     tail -n 200 flask.log || true
-      #   shell: bash    
+      - name: Stop Flask API (always run)
+        if: always()
+        run: |
+          echo "Stopping Flask..."
+          # kill by stored PID (preferred)
+          if [ -f flask.pid ]; then
+            kill $(cat flask.pid) || true
+            rm -f flask.pid
+          fi
+          # fallback: kill any lingering process by file pattern (harmless if nothing found)
+          pkill -f "flask_app/app.py" || true
+          echo "Flask stopped (or no process found)."
+          echo "---- flask.log (last 200 lines) ----"
+          tail -n 200 flask.log || true
+        shell: bash    
