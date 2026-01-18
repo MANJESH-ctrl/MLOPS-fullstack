@@ -56,7 +56,7 @@ jobs:
         run: |
           echo "Starting Flask app in background..."
           # -u unbuffered so logs flush immediately; nohup keeps it alive in background
-          nohup python -u flask_app/app2.py > flask.log 2>&1 &
+          nohup python -u flask_app/app.py > flask.log 2>&1 &
           echo $! > flask.pid
           echo "Flask PID: $(cat flask.pid)"
 
@@ -95,7 +95,7 @@ jobs:
             rm -f flask.pid
           fi
           # fallback: kill any lingering process by file pattern (harmless if nothing found)
-          pkill -f "flask_app/app2.py" || true
+          pkill -f "flask_app/app.py" || true
           echo "Flask stopped (or no process found)."
           echo "---- flask.log (last 200 lines) ----"
           tail -n 200 flask.log || true
