@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: mlops-app
-        image: 930936104956.dkr.ecr.eu-north-1.amazonaws.com/mlops-app:__IMAGE_TAG__
+        image: 007093308237.dkr.ecr.eu-north-1.amazonaws.com/mlops-app:__IMAGE_TAG__
         imagePullPolicy: Always
         resources:
           requests:
