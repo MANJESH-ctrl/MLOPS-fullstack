@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mlops-app
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: mlops-app
+  template:
+    metadata:
+      labels:
+        app: mlops-app
+    spec:
+      containers:
+      - name: mlops-app
+        image: 930936104956.dkr.ecr.eu-north-1.amazonaws.com/mlops-app:__IMAGE_TAG__
+        imagePullPolicy: Always
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "250m"
+          limits:
+            memory: "512Mi"
+            cpu: "1"
+        ports:
+        - containerPort: 5000
+        env:
+        - name: CAPSTONE_TEST
+          valueFrom:
+            secretKeyRef:
+              name: capstone-secret
+              key: CAPSTONE_TEST
+
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: mlops-app-service
+spec:
+  type: LoadBalancer
+  selector:
+    app: mlops-app
+  ports:
+    - name: http
+      protocol: TCP
+      port: 5000
+      targetPort: 5000

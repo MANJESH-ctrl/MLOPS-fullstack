@@ -86,4 +86,24 @@ jobs:
         run: |
           docker push ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/${{ secrets.ECR_REPOSITORY }}:${IMAGE_TAG}
 
-        
+      - name: Set Up kubectl
+        uses: azure/setup-kubectl@v3
+        with:
+          version: 'latest'
+      
+      - name: Update kubeconfig
+        run: |
+          aws eks update-kubeconfig --region eu-north-1 --name mlops-app-cluster
+
+      - name: Create Kubernetes Secret
+        run: |
+          kubectl create secret generic capstone-secret \
+            --from-literal=CAPSTONE_TEST=${{ secrets.CAPSTONE_TEST }} --dry-run=client -o yaml | kubectl apply -f -
+
+      - name: Inject image tag into deployment
+        run: |
+          sed -i "s/__IMAGE_TAG__/${IMAGE_TAG}/g" deployment.yaml
+
+      - name: Deploy to EKS
+        run: |
+          kubectl apply -f deployment.yaml  
